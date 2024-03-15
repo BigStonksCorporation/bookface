@@ -25,14 +25,17 @@ services:
     environment:
       VARNISH_SIZE: 1G
       VARNISH_HTTP_PORT: 8080
+    deploy:
+      replicas: 3
+
   web:
     image: 192.168.128.23:5000/bf:v17
 
     configs:
       - source: bf_config
         target: /var/www/html/config.php
-    ports:
-      - "1234:80"
+    # ports:
+    #   - "1234:80"
     networks:
       - bf
     volumes:
