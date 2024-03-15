@@ -13,6 +13,7 @@ networks:
 
 services:
   varnish:
+    image: varnish
     build: ./varnish
     restart: always
     ports:
