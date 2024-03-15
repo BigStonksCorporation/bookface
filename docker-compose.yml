@@ -13,7 +13,7 @@ networks:
 
 services:
   varnish:
-    image: varnish
+    image: my-varnish
     build: ./varnish
     restart: always
     ports:
@@ -29,7 +29,7 @@ services:
       replicas: 3
 
   web:
-    image: bookface
+    image: my-bookface
     build: ./.
 
     configs:
