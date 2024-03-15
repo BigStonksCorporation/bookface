@@ -17,14 +17,14 @@ services:
     build: ./varnish
     restart: always
     ports:
-      - "90:8080"
+      - "80:80"
     networks:
       - bf
     tmpfs:
       - /var/lib/varnish/varnishd:exec
     environment:
       VARNISH_SIZE: 1G
-      VARNISH_HTTP_PORT: 8080
+      # VARNISH_HTTP_PORT: 8080
     deploy:
       replicas: 3
 

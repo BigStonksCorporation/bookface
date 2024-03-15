@@ -3,7 +3,7 @@ import std;
 
 backend default {
 	.host = "web";
-	.port = "80";
+	.port = "8080";
 	.probe = { 
 		.url = "/";
 		.timeout = 1s;

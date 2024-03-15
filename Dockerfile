@@ -16,8 +16,9 @@ ADD code/* /var/www/html/
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD init.sh /
 ADD config.php.docker /var/www/html/config.php
+COPY ports.conf /etc/apache2/ports.conf
 
-EXPOSE 80
+EXPOSE 8080
 EXPOSE 9117
 
 ENTRYPOINT ["/usr/bin/supervisord","-c","/etc/supervisor/conf.d/supervisord.conf"]
