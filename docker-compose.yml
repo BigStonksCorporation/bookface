@@ -30,7 +30,7 @@ services:
 
   web:
     image: bookface
-    build: .
+    build: ./.
 
     configs:
       - source: bf_config
