@@ -1,5 +1,6 @@
 vcl 4.1;
 import std;
+import dynamic;
 
 backend default {
 	.host = "web";
@@ -24,7 +25,18 @@ sub vcl_backend_response {
 	// no keep - the grace should be enough for 304 candidates
 }
 
+sub vcl_init {
+  new ddir = dynamic.director(
+    port = "8000",
+    # The DNS resolution is done in the background,
+    # see https://github.com/nigoroll/libvmod-dynamic/blob/master/src/vmod_dynamic.vcc#L48
+    ttl = 30s,
+  );
+}
+
 sub vcl_recv {
+	set req.backend_hint = ddir.backend("web");
+
 	if (std.healthy(req.backend_hint)) {
 		// change the behavior for healthy backends: Cap grace to 10s
 		set req.grace = 10s;
