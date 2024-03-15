@@ -2,7 +2,7 @@ vcl 4.1;
 import std;
 
 backend default {
-	.host = "web";
+	.host = "localhost";
 	.port = "8080";
 	.probe = { 
 		.url = "/";
