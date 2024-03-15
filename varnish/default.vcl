@@ -4,7 +4,7 @@ import dynamic;
 
 backend default {
 	.host = "balancer";
-	.port = "80";
+	.port = "1234";
 	.probe = { 
 		.url = "/";
 		.timeout = 1s;
@@ -27,7 +27,7 @@ sub vcl_backend_response {
 
 sub vcl_init {
   new ddir = dynamic.director(
-    port = "80",
+    port = "1234",
     # The DNS resolution is done in the background,
     # see https://github.com/nigoroll/libvmod-dynamic/blob/master/src/vmod_dynamic.vcc#L48
     ttl = 30s,

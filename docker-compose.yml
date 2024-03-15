@@ -27,7 +27,6 @@ services:
       - /var/lib/varnish/varnishd:exec
     environment:
       VARNISH_SIZE: 1G
-      # VARNISH_HTTP_PORT: 8080
     deploy:
       replicas: 3
 
