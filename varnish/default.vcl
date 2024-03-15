@@ -3,8 +3,8 @@ import std;
 import dynamic;
 
 backend default {
-	.host = "web";
-	.port = "8000";
+	.host = "balancer";
+	.port = "80";
 	.probe = { 
 		.url = "/";
 		.timeout = 1s;
@@ -27,7 +27,7 @@ sub vcl_backend_response {
 
 sub vcl_init {
   new ddir = dynamic.director(
-    port = "8000",
+    port = "80",
     # The DNS resolution is done in the background,
     # see https://github.com/nigoroll/libvmod-dynamic/blob/master/src/vmod_dynamic.vcc#L48
     ttl = 30s,
@@ -35,7 +35,7 @@ sub vcl_init {
 }
 
 sub vcl_recv {
-	set req.backend_hint = ddir.backend("web");
+	set req.backend_hint = ddir.backend("balancer");
 
 	if (std.healthy(req.backend_hint)) {
 		// change the behavior for healthy backends: Cap grace to 10s
