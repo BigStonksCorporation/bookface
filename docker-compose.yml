@@ -29,7 +29,8 @@ services:
       replicas: 3
 
   web:
-    image: 192.168.128.23:5000/bf:v17
+    image: bookface
+    build: .
 
     configs:
       - source: bf_config
