@@ -32,15 +32,15 @@ services:
       replicas: 3
 
   balancer:
-    image: haproxy:2.9
+    image: haproxy
     restart: always
     configs:
       - source: haproxy_config
         target: /usr/local/etc/haproxy/haproxy.cfg
     networks:
       - bf
-    deploy:
-      replicas: 3
+    # deploy:
+    #   replicas: 3
 
   web:
     image: my-bookface
@@ -88,5 +88,5 @@ services:
     networks:
       - bf
 
-    ports:
-      - "1936:1936"
+    # ports:
+    #   - "1936:1936"
