@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 configs:
   bf_config:
@@ -12,20 +12,30 @@ networks:
     attachable: true
 
 services:
+  varnish:
+    build: ./varnish
+    restart: always
+    ports:
+      - "80:8080"
+    tmpfs:
+      - /var/lib/varnish/varnishd:exec
+    environment:
+      VARNISH_SIZE: 1G
+      VARNISH_HTTP_PORT: 8080
   web:
     image: 192.168.128.23:5000/bf:v17
-    
+
     configs:
       - source: bf_config
         target: /var/www/html/config.php
-    ports:
-      - "80:80"
+    # ports:
+    #   - "80:80"
     networks:
-        - bf
+      - bf
     volumes:
-        - type: bind
-          source: /bf_images
-          target: /var/www/html/images
+      - type: bind
+        source: /bf_images
+        target: /var/www/html/images
 
     environment:
       BF_MEMCACHE_SERVER: memcache
@@ -34,20 +44,20 @@ services:
       BF_DB_USER: bfuser
       BF_DB_NAME: bf
       BF_FRONTPAGE_LIMIT: 8000
-      
+
     deploy:
       replicas: 3
 
   memcache:
     image: memcached
     restart: always
-    
+
     networks:
       - bf
 
   db_balance:
     image: haproxy
-    
+
     restart: always
 
     configs:
