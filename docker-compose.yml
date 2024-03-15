@@ -29,8 +29,8 @@ services:
     configs:
       - source: bf_config
         target: /var/www/html/config.php
-    # ports:
-    #   - "80:80"
+    ports:
+      - "1234:80"
     networks:
       - bf
     volumes:
