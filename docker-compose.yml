@@ -33,7 +33,7 @@ services:
       BF_DB_PORT: 26257
       BF_DB_USER: bfuser
       BF_DB_NAME: bf
-      BF_FRONTPAGE_LIMIT: 8000
+      BF_FRONTPAGE_LIMIT: 6300
       
     deploy:
       replicas: 3
