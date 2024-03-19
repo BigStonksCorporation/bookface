@@ -1,11 +1,8 @@
-version: "3.3"
+version: '3.3'
 
 configs:
   bf_config:
     file: ./config.php.swarm
-
-  haproxy_db_config:
-    file: ./haproxy_db.cfg
 
   haproxy_config:
     file: ./haproxy.cfg
@@ -15,47 +12,20 @@ networks:
     attachable: true
 
 services:
-  varnish:
-    image: my-varnish
-    build: ./varnish
-    restart: always
-    ports:
-      - "80:80"
-    networks:
-      - bf
-    tmpfs:
-      - /var/lib/varnish/varnishd:exec
-    environment:
-      VARNISH_SIZE: 1G
-    deploy:
-      replicas: 3
-
-  balancer:
-    image: haproxy
-    restart: always
-    configs:
-      - source: haproxy_config
-        target: /usr/local/etc/haproxy/haproxy.cfg
-    networks:
-      - bf
-    # deploy:
-    #   replicas: 3
-
   web:
-    image: my-bookface
-    build: ./.
-
+    image: 192.168.128.23:5000/bf:v17
+    
     configs:
       - source: bf_config
         target: /var/www/html/config.php
-    # ports:
-    #   - "8000:8000"
+    ports:
+      - "80:80"
     networks:
-      - bf
+        - bf
     volumes:
-      - type: bind
-        source: /bf_images
-        target: /var/www/html/images
+        - type: bind
+          source: /bf_images
+          target: /var/www/html/images
 
     environment:
       BF_MEMCACHE_SERVER: memcache
@@ -64,28 +34,28 @@ services:
       BF_DB_USER: bfuser
       BF_DB_NAME: bf
       BF_FRONTPAGE_LIMIT: 8000
-
+      
     deploy:
       replicas: 3
 
   memcache:
     image: memcached
     restart: always
-
+    
     networks:
       - bf
 
   db_balance:
     image: haproxy
-
+    
     restart: always
 
     configs:
-      - source: haproxy_db_config
+      - source: haproxy_config
         target: /usr/local/etc/haproxy/haproxy.cfg
 
     networks:
       - bf
 
-    # ports:
-    #   - "1936:1936"
+    ports:
+      - "1936:1936"
